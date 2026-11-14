@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes">
+<title>Kresse-Labor – Petrischalen von oben</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Verdana,sans-serif;-webkit-tap-highlight-color:transparent}
+html{touch-action:manipulation}
+body{margin:0;background:linear-gradient(#e0eed8,#f6fbf3);color:#234;padding:6px;min-height:100vh}
+header{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin:0 0 4px}
+h1{margin:0;color:#2e7d32;font-size:1.05em}
+.sub{color:#567;font-size:.75em}
+.box{background:#fff;border-radius:8px;box-shadow:0 2px 6px rgba(40,90,40,.12);padding:6px 8px;margin-bottom:6px}
+.hidden{display:none}
+h2{margin:0 0 4px;font-size:.85em;color:#1b5e20}
+.shelf{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.catlbl{font-size:.66em;color:#8a6d3b;font-weight:bold;width:100%;margin:1px 0 -1px}
+.mat{background:#fdf8ec;border:1.5px solid #d8c49a;border-radius:7px;padding:3px 8px;cursor:pointer;font-size:.74em;font-weight:bold;color:#4a3b1e;display:flex;align-items:center;gap:4px;user-select:none}
+.mat:hover{border-color:#2e7d32}
+.mat.sel{border-color:#2e7d32;background:#e2f4e0;box-shadow:0 0 0 2px rgba(46,125,50,.3)}
+.mat .ico{font-size:1.05em}
+.bench{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+@media(max-width:1250px){.bench{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:640px){.bench{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:420px){.bench{grid-template-columns:1fr}}
+.dishcard{background:#fbfef9;border:1.5px solid #cfe3c8;border-radius:8px;padding:5px 6px}
+.dishcard.ready{border-color:#2e7d32;box-shadow:0 0 0 2px rgba(46,125,50,.25)}
+.dishcard.bad{border-color:#e57373}
+.dishcard h3{margin:0 0 3px;color:#2e7d32;font-size:.74em;display:flex;justify-content:space-between;align-items:center;gap:4px;line-height:1.25}
+.dishcard h3 .dnm{font-weight:bold}
+.dishcard h3 .nr{color:#888;font-weight:normal}
+.dish3d{width:100%;max-width:120px;display:block;margin:0 auto}
+.placed{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px;min-height:16px}
+.pchip{background:#e8f3e4;border:1px solid #9dbf93;border-radius:6px;padding:1px 6px;font-size:.66em;cursor:pointer}
+.pchip:hover{background:#fdeaea;border-color:#e57373;color:#8a1f1f}
+.emptymsg{font-size:.66em;color:#aaa}
+.tip{display:none;background:#fff4e0;border:1.5px dashed #ffa726;border-radius:7px;padding:4px 7px;margin-top:4px;font-size:.68em;color:#7a4b00}
+.tip.good{background:#e7f6e4;border-style:solid;border-color:#66bb6a;color:#1b5e20}
+.banner{display:none;background:#fdecea;border:1.5px solid #e57373;border-radius:8px;padding:6px 10px;margin-bottom:6px;font-size:.78em;color:#8a1f1f}
+.help{background:#e3f2fd;border-radius:7px;padding:5px 9px;font-size:.72em;color:#14508c;margin-bottom:6px}
+button.big{background:linear-gradient(#43a047,#2e7d32);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:.85em;cursor:pointer;min-height:38px}
+button.big:disabled{opacity:.45;cursor:default}
+button.ghost{background:#fff;color:#2e7d32;border:2px solid #2e7d32;margin-left:6px}
+.daybox{font-size:1.2em;font-weight:bold;color:#2e7d32;text-align:center;margin:0 0 4px}
+.chk{background:#ff9800;color:#fff;border:none;border-radius:7px;padding:6px 12px;font-size:.78em;cursor:pointer;min-height:38px;margin-left:4px}
+.chk:disabled{opacity:.4}
+.fb{font-weight:bold;margin-left:4px;font-size:.78em}
+.ok{color:#2e7d32}.no{color:#c62828}
+.counter{font-size:.95em;font-weight:bold;color:#e65100}
+.obs{font-size:.7em;color:#345;font-style:italic;margin-top:4px;background:#eef7ea;border-radius:6px;padding:4px 7px}
+table{border-collapse:collapse;width:100%;margin-top:4px;font-size:.75em}
+th,td{border:1px solid #bbb;padding:4px;text-align:center}
+th{background:#e3f2e1;color:#2e7d32}
+.party{font-size:1.2em;text-align:center}
+.actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:8px 0 2px}
+.cntrow{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:4px;font-size:.72em}
+</style>
+</head>
+<body>
+<header>
+<h1>🧫 Kresse-Labor</h1>
+<span class="sub">6 Petrischalen · je 20 Samen · Material antippen → Schale antippen.</span>
+</header>
+
+<div class="help">📋 <b>Aufgabe:</b> Jede Schale ist für eine Versuchsversion vorgesehen (siehe Titel!).
+Baue die <b>Kontrolle</b> mit allen optimalen Bedingungen und die fünf Versuche, in denen jeweils
+<b>nur genau eine</b> Variable fehlt. ⚔️ Faustregel: Ein Versuch darf sich von der Kontrolle nur durch
+<b>eine einzige</b> Veränderung unterscheiden! Material entfernen: Chip antippen.</div>
+
+<div class="banner" id="banner"></div>
+
+<div class="box">
+  <h2>🎒 Materialkiste</h2>
+  <div class="shelf" id="shelf"></div>
+</div>
+
+<div class="box">
+  <h2>🔬 Deine 6 Petrischalen</h2>
+  <div class="bench" id="bench"></div>
+  <p class="actions">
+    <button class="big" id="startBtn">▶️ Zeitraffer: 1 Woche</button>
+    <button class="big ghost" onclick="location.reload()">🔄 Neu</button>
+  </p>
+</div>
+
+<div class="box hidden" id="runPanel">
+  <h2>⏩ Eine Woche im Zeitraffer …</h2>
+  <div class="daybox" id="daybox">🗓️ Tag 1</div>
+  <div class="bench" id="runBench"></div>
+</div>
+
+<div class="box hidden" id="countPanel">
+  <h2>🔍 Auszählen – gekeimte Samen antippen, dann „Prüfen“</h2>
+  <div class="bench" id="countBench"></div>
+</div>
+
+<div class="box hidden" id="sumPanel">
+  <div class="party">🎉 Gut geforscht! 🌱</div>
+  <table id="sumTable"></table>
+  <p class="obs">💬 <b>Auswertung:</b> Was brauchen Kressesamen unbedingt zum <b>Keimen</b>? Wofür brauchen sie Licht erst <b>später</b> (schau in die dunkle Schale!)? Vergleiche jeden Versuch mit deiner Kontrolle.</p>
+</div>
+
+<script>
+const N=20;
+const VERSIONS=["Kontrolle","ohne Erde","ohne Wasser","ohne Licht","ohne Luft","ohne Wärme"];
+/* fehlende Variable je Version – Kontrolle: nichts fehlt (null) */
+const MISSING=[null,"substrat","wasser","licht","luft","waerme"];
+
+const MAT=[
+ {grp:"🟤 Unterlage"},
+ {cat:"substrat",val:"erde",ico:"🟫",nm:"Erde"},
+ {cat:"substrat",val:"watte",ico:"🧻",nm:"Watte (Erde-Ersatz)"},
+ {grp:"💧 Material"},
+ {cat:"wasser",val:1,ico:"💧",nm:"Wasser"},
+ {cat:"samen",val:1,ico:"🌰",nm:"Samen ×20"},
+ {grp:"📍 Standort"},
+ {cat:"standort",val:"hell",ico:"☀️",nm:"hell"},
+ {cat:"standort",val:"dunkel",ico:"🌑",nm:"dunkel"},
+ {grp:"🌡️ Temperatur"},
+ {cat:"temp",val:"warm",ico:"🌡️",nm:"~20 °C"},
+ {cat:"temp",val:"kalt",ico:"❄️",nm:"~5 °C"},
+ {grp:"🫙 Deckel"},
+ {cat:"deckel",val:"offen",ico:"🫁",nm:"offen"},
+ {cat:"deckel",val:"dicht",ico:"🔒",nm:"luftdicht"},
+];
+let dishes=[];for(let i=0;i<6;i++)dishes.push({substrat:null,wasser:0,samen:0,standort:null,temp:null,deckel:null});
+let sel=null,phase="build";
+
+const SEEDPOS=[];
+for(let k=0;k<11;k++){const a=k*Math.PI*2/11;SEEDPOS.push([Math.cos(a)*.72,Math.sin(a)*.72]);}
+for(let k=0;k<8;k++){const a=k*Math.PI*2/8+.35;SEEDPOS.push([Math.cos(a)*.44,Math.sin(a)*.44]);}
+SEEDPOS.push([0,0]);
+
+const shelf=document.getElementById("shelf");
+MAT.forEach(m=>{
+  if(m.grp){shelf.insertAdjacentHTML("beforeend",`<div class="catlbl">${m.grp}</div>`);return;}
+  const d=document.createElement("div");d.className="mat";
+  d.innerHTML=`<span class="ico">${m.ico}</span>${m.nm}`;
+  d.onclick=()=>{document.querySelectorAll(".mat").forEach(x=>x.classList.remove("sel"));
+    if(sel===m){sel=null;}else{sel=m;d.classList.add("sel");}};
+  shelf.appendChild(d);
+});
+
+const VARS=["substrat","wasser","samen","standort","temp","deckel"];
+const FAZZ=["Unterlage","Wasser","Samen","Standort","Temperatur","Deckel"];
+
+/* ---------- Erwartete Konfiguration je Version (Musterlösung intern, nie direkt angezeigt) ---------- */
+function expected(i){
+  const miss=MISSING[i];
+  return {
+    substrat:(miss==="substrat")?false:true,   /* false = darf NICHT drin sein, true = muss drin sein */
+    wasser:(miss==="wasser")?false:true,
+    samen:true,
+    standort:(miss==="licht")?"dunkel":"hell",
+    temp:(miss==="waerme")?"kalt":"warm",
+    deckel:(miss==="luft")?"dicht":"offen"
+  };
+}
+function checkDish(i){
+  const d=dishes[i],e=expected(i),diffs=[];
+  if(e.substrat!==!!d.substrat)diffs.push("Unterlage");
+  if(e.wasser!==!!d.wasser)diffs.push("Wasser");
+  if(!d.samen)diffs.push("Samen");
+  if(e.standort!==d.standort)diffs.push("Standort");
+  if(e.temp!==d.temp)diffs.push("Temperatur");
+  if(e.deckel!==d.deckel)diffs.push("Deckel");
+  return diffs;
+}
+function dishValid(i){return checkDish(i).length===0;}
+
+function dishHead(i){
+  return `<h3><span class="nr">🧫 ${i+1}:</span> <span class="dnm">${VERSIONS[i]}</span></h3>`;
+}
+
+const CHIP={substrat:v=>v==="erde"?"🟫 Erde":"🧻 Watte",wasser:"💧 Wasser",samen:"🌰 20 Samen",
+ standort:v=>v==="hell"?"☀️ hell":"🌑 dunkel",temp:v=>v==="warm"?"🌡️ ~20 °C":"❄️ ~5 °C",
+ deckel:v=>v==="offen"?"🫁 offen":"🔒 luftdicht"};
+function chipTxt(k,v){return typeof CHIP[k]==="function"?CHIP[k](v):CHIP[k];}
+
+function dishSVG(d,i){
+  const C=55,R=50,RI=46,W=42;
+  let h=`<svg class="dish3d" viewBox="0 0 110 110" data-d="${i}">`;
+  h+=`<defs>
+   <radialGradient id="gl${i}" cx=".38" cy=".32" r="1">
+    <stop offset="0" stop-color="rgba(255,255,255,.9)"/><stop offset="1" stop-color="rgba(195,218,208,.55)"/></radialGradient>
+   <radialGradient id="soil${i}" cx=".4" cy=".35" r="1">
+    <stop offset="0" stop-color="#7a5738"/><stop offset="1" stop-color="#5b3f26"/></radialGradient>
+  </defs>`;
+  h+=`<circle cx="56" cy="57" r="${R}" fill="rgba(60,90,60,.14)"/>`;
+  h+=`<circle cx="${C}" cy="${C}" r="${R}" fill="url(#gl${i})" stroke="rgba(120,160,140,.95)" stroke-width="2.2"/>`;
+  h+=`<circle cx="${C}" cy="${C}" r="${RI}" fill="rgba(255,255,255,.35)" stroke="rgba(255,255,255,.85)" stroke-width="1.4"/>`;
+  if(d.substrat==="erde"){
+    h+=`<circle cx="${C}" cy="${C}" r="${W}" fill="url(#soil${i})" stroke="#4a3320" stroke-width="1.2"/>
+       <circle cx="${C-14}" cy="${C-9}" r="6" fill="#6b4a2f"/>
+       <circle cx="${C+12}" cy="${C+10}" r="7" fill="#6b4a2f"/>`;
+  }else if(d.substrat==="watte"){
+    h+=`<circle cx="${C}" cy="${C}" r="${W}" fill="#fafaf4" stroke="#e2e2d8" stroke-width="1.4"/>
+       <circle cx="${C-12}" cy="${C-8}" r="9" fill="#f0f0e8"/>
+       <circle cx="${C+13}" cy="${C+9}" r="10" fill="#f0f0e8"/>`;
+  }
+  if(d.wasser)h+=`<circle cx="${C}" cy="${C}" r="${d.substrat?W-4:RI-4}" fill="rgba(120,190,240,.4)"/>`;
+  if(d.deckel==="dicht"){
+    h+=`<circle cx="${C}" cy="${C}" r="${R-2}" fill="rgba(225,242,248,.45)" stroke="rgba(150,180,190,.95)" stroke-width="2.4"/>`;
+    h+=`<path d="M${C-R+8},${C-10} A${R-14},${R-14} 0 0 1 ${C+R-14},${C-16}" fill="none" stroke="rgba(120,150,165,.8)" stroke-width="2.4" stroke-linecap="round"/>`;
+    h+=`<path d="M${C-R+10},${C+8} A${R-14},${R-14} 0 0 0 ${C+R-18},${C+6}" fill="none" stroke="rgba(120,150,165,.6)" stroke-width="2" stroke-linecap="round"/>`;
+  }else{
+    h+=`<path d="M${C-R+10},${C-14} A${R-12},${R-12} 0 0 1 ${C+R-14},${C-18}" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="2.6" stroke-linecap="round"/>`;
+  }
+  if(d.samen){
+    SEEDPOS.forEach((p,j)=>{
+      const sx=C+p[0]*W*.82, sy=C+p[1]*W*.82;
+      h+=`<g class="seed" data-j="${j}">
+        <circle class="seedhit" cx="${sx}" cy="${sy}" r="8.5" fill="rgba(0,0,0,0)"/>
+        <ellipse class="sdot" cx="${sx}" cy="${sy}" rx="3.4" ry="2.4" fill="${d.substrat==="erde"?"#caa878":"#7a5b38"}"/>
+        <ellipse class="lf1" cx="${sx-3.4}" cy="${sy-1}" rx="0" ry="0" fill="#66bb6a"/>
+        <ellipse class="lf2" cx="${sx+3.4}" cy="${sy-1}" rx="0" ry="0" fill="#66bb6a"/></g>`;
+    });
+  }
+  h+=`<ellipse cx="${C-26}" cy="${C-30}" rx="12" ry="5" fill="rgba(255,255,255,.5)" transform="rotate(-30 ${C-26} ${C-30})"/>`;
+  h+=`</svg>`;
+  return h;
+}
+
+function renderDish(i,interactive){
+  const el=document.getElementById("card"+i),d=dishes[i];
+  const keys=VARS.filter(k=>d[k]);
+  const chips=keys.map(k=>`<span class="pchip" data-rm="${k}">${chipTxt(k,d[k])} <b style="color:#b23c3c">✕</b></span>`).join("");
+  el.className="dishcard"+(dishValid(i)?" ready":" bad");
+  el.innerHTML=dishHead(i)
+    +dishSVG(d,i)
+    +`<div class="placed">${chips||'<span class="emptymsg">leer – bestücke mich!</span>'}</div>`
+    +`<div class="tip" id="tip${i}"></div>`;
+  if(interactive){
+    const svg=el.querySelector(".dish3d");
+    svg.style.cursor="pointer";
+    svg.onclick=()=>{if(sel){addToDish(i,sel);}};
+    el.querySelectorAll(".pchip").forEach(c=>{
+      c.onclick=()=>{const k=c.dataset.rm;
+        dishes[i][k]=(k==="substrat"||k==="standort"||k==="temp"||k==="deckel")?null:0;refresh();};
+    });
+  }
+}
+
+function addToDish(i,m){
+  if(m.cat==="substrat")dishes[i].substrat=m.val;
+  else if(m.cat==="wasser"||m.cat==="samen")dishes[i][m.cat]=1;
+  else dishes[i][m.cat]=m.val;
+  sel=null;document.querySelectorAll(".mat").forEach(x=>x.classList.remove("sel"));
+  refresh();
+}
+function tip(i,msg,good){const t=document.getElementById("tip"+i);if(t){t.innerHTML=(good?"✅ ":"💡 ")+msg;t.style.display="block";t.className="tip"+(good?" good":"");}}
+function refresh(){for(let i=0;i<6;i++)renderDish(i,true);check();}
+
+function check(){
+  document.querySelectorAll(".tip").forEach(t=>{t.style.display="none";t.className="tip";});
+  let blocker=false;const banner=document.getElementById("banner");
+
+  for(let i=0;i<6;i++){
+    const d=dishes[i],diffs=checkDish(i);
+    if(diffs.length===0){
+      tip(i,i===0?"Perfekte Kontrolle – alle Bedingungen optimal!":"Genau richtig: nur EINE Variable fehlt. Weiter so!",true);
+      continue;
+    }
+    const empty=!d.samen&&!d.wasser&&!d.substrat&&!d.standort&&!d.temp&&!d.deckel;
+    if(empty){
+      tip(i,"Diese Schale ist noch ganz leer. Sie soll später „"+VERSIONS[i]+"“ zeigen – überlege, was dafür hineingehört …");
+    }else{
+      let msg;
+      if(i===0){
+        msg="Die Kontrolle braucht <b>alle</b> optimalen Bedingungen – nichts darf fehlen! Prüfe noch: "+diffs.join(", ")+".";
+      }else{
+        msg="Vergleiche mit deiner Kontrolle: Diese Schale darf sich <b>nur durch EINE Sache</b> unterscheiden („"+VERSIONS[i]+"“). Schau noch mal auf: "+diffs.join(", ")+".";
+      }
+      tip(i,msg);
+    }
+    blocker=true;
+  }
+
+  if(blocker){
+    banner.style.display="block";
+    banner.innerHTML="💡 <b>Hinweis:</b> Noch sind nicht alle Schalen korrekt bestückt. Die 💡-Tipps an den Schalen helfen dir – in jedem Versuch wird nur <b>eine</b> Variable verändert!";
+  }else banner.style.display="none";
+  return !blocker;
+}
+
+const bench=document.getElementById("bench");
+for(let i=0;i<6;i++){const c=document.createElement("div");c.id="card"+i;c.className="dishcard";bench.appendChild(c);renderDish(i,true);}
+check();
+
+/* Simulation */
+let sim=null;
+document.getElementById("startBtn").onclick=()=>{
+  if(!check()){alert("Noch nicht fertig! Lies die 💡-Hinweise an den Schalen – in jedem Versuch wird nur EINE Variable verändert.");return;}
+  phase="run";
+  document.getElementById("startBtn").disabled=true;
+  document.querySelectorAll(".mat").forEach(x=>{x.style.pointerEvents="none";x.style.opacity=.5;});
+  sim=dishes.map(d=>{
+    let n,obs,pale=false;
+    if(!d.wasser){n=0;obs="Vertrocknet – ohne Wasser kann kein Same quellen und keimen.";}
+    else if(d.temp==="kalt"){n=1+Math.floor(Math.random()*3);obs="Im Kühlschrank wagt kaum ein Same hinaus – zu kalt!";}
+    else if(d.deckel==="dicht"){n=3+Math.floor(Math.random()*4);obs="Einige Samen quellen, dann geht die Luft aus – Keimung stoppt.";}
+    else if(!d.substrat){n=9+Math.floor(Math.random()*4);obs="Ohne Erde/Watte fehlt Halt und Feuchtigkeitsspeicher – nur etwa die Hälfte schafft es.";}
+    else if(d.standort==="dunkel"){n=15+Math.floor(Math.random()*3);pale=true;obs="Die meisten keimen – aber bleich und dünn. Warum wohl nicht grün? 🤔";}
+    else{n=17+Math.floor(Math.random()*3);obs="Kräftige, sattgrüne Keimlinge – perfekter Ansatz! 🌟";}
+    const idx=[...Array(N).keys()].sort(()=>Math.random()-.5).slice(0,n);
+    const germ={};idx.forEach(j=>germ[j]=2+Math.floor(Math.random()*2));
+    return{germ,n,pale,obs,marked:{},done:false};
+  });
+  const rb=document.getElementById("runBench");rb.innerHTML="";
+  dishes.forEach((d,i)=>{
+    const w=document.createElement("div");w.className="dishcard"+(i===0?" ready":"");
+    w.innerHTML=dishHead(i)+dishSVG(d,i);
+    rb.appendChild(w);
+  });
+  document.getElementById("runPanel").classList.remove("hidden");
+  const cards=[...rb.children];
+  let day=1;const db=document.getElementById("daybox");
+  draw(day);
+  const iv=setInterval(()=>{day++;db.textContent="🗓️ Tag "+day;draw(day);
+    if(day>=7){clearInterval(iv);db.textContent="🏁 Tag 7 – Woche vorbei!";setTimeout(startCount,800);}},1300);
+  function draw(dd){
+    sim.forEach((st,i)=>{
+      cards[i].querySelectorAll(".seed").forEach(s=>{
+        const j=+s.dataset.j;if(st.germ[j]===undefined||dd<st.germ[j])return;
+        growSeed(s,st,Math.min(1,(dd-st.germ[j])/4));
+      });
+    });
+  }
+};
+function growSeed(s,st,t){
+  const dot=s.querySelector(".sdot"),
+        l1=s.querySelector(".lf1"),l2=s.querySelector(".lf2");
+  const col=st.pale?"#e0d378":"#66bb6a", dark=st.pale?"#cfc266":"#4caf50";
+  const rx=t*4.2, ry=t*2.2;
+  l1.setAttribute("rx",rx);l1.setAttribute("ry",ry);l1.setAttribute("fill",dark);
+  l2.setAttribute("rx",rx);l2.setAttribute("ry",ry);l2.setAttribute("fill",col);
+  dot.setAttribute("fill","#8a6b4a");
+}
+
+/* Auszählen */
+function startCount(){
+  phase="count";
+  document.getElementById("countPanel").classList.remove("hidden");
+  const cb=document.getElementById("countBench");cb.innerHTML="";
+  sim.forEach((st,i)=>{
+    const d=dishes[i];
+    const w=document.createElement("div");w.className="dishcard"+(i===0?" ready":"");
+    w.innerHTML=dishHead(i)+dishSVG(d,i)
+      +`<div class="placed" style="pointer-events:none">${VARS.filter(k=>d[k]).map(k=>`<span class="pchip">${chipTxt(k,d[k])}</span>`).join("")}</div>`
+      +`<div class="obs">🔍 ${st.obs}</div>
+       <div class="cntrow">✋ <span class="counter" id="cn${i}">0</span>/${N}
+        <button class="chk" id="ck${i}">✅ Prüfen</button><span class="fb" id="fb${i}"></span></div>`;
+    cb.appendChild(w);
+    w.querySelectorAll(".seed").forEach(s=>{
+      const j=+s.dataset.j;
+      if(st.germ[j]===undefined)return;
+      growSeed(s,st,Math.min(1,(7-st.germ[j])/4));
+      const hit=s.querySelector(".seedhit");
+      hit.style.cursor="pointer";
+      hit.onclick=()=>{
+        const mk=s.classList.toggle("mk");
+        if(mk){st.marked[j]=1;hit.style.stroke="#ff9800";hit.style.strokeWidth="2.2";}
+        else{delete st.marked[j];hit.style.stroke="none";}
+        document.getElementById("cn"+i).textContent=Object.keys(st.marked).length;
+      };
+    });
+    document.getElementById("ck"+i).onclick=()=>{
+      const m=Object.keys(st.marked).length,fb=document.getElementById("fb"+i);
+      if(m===st.n){fb.textContent="🎉 Richtig!";fb.className="fb ok";st.done=true;
+        document.getElementById("ck"+i).disabled=true;
+        if(sim.every(x=>x.done))showSummary();}
+      else if(m>st.n){fb.textContent="❌ Zu viele! Nicht jeder Same ist aufgegangen.";fb.className="fb no";}
+      else{fb.textContent="❌ Zu wenige! Auch die kleinen Keimblätter zählen.";fb.className="fb no";}
+    };
+  });
+}
+function showSummary(){
+  document.getElementById("sumPanel").classList.remove("hidden");
+  let h="<tr><th>Nr.</th><th>Versuch</th><th>Gekeimt</th><th>Anteil</th></tr>";
+  sim.forEach((st,i)=>{
+    h+=`<tr><td>${i+1}</td><td><b>${VERSIONS[i]}</b></td><td><b>${st.n}</b> / ${N}</td><td>${Math.round(st.n/N*100)} %</td></tr>`;
+  });
+  document.getElementById("sumTable").innerHTML=h;
+  document.getElementById("sumPanel").scrollIntoView({behavior:"smooth"});
+}
+</script>
+</body>
+</html>
