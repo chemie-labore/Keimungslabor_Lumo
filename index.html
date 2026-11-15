@@ -56,12 +56,54 @@ th{background:#e3f2e1;color:#2e7d32}
 .actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:8px 0 2px}
 .cntrow{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:4px;font-size:.72em}
 </style>
+<style>
+/* Reserved space in the host layout. No fixed position and no apparatus overlay. */
+.leaf-companion{box-sizing:border-box;display:grid;grid-template-columns:110px minmax(0,1fr) 44px;align-items:center;gap:8px;min-height:116px;padding:3px 6px 3px 2px;flex:none;min-width:0;border:1px solid #bdcfa8;border-radius:14px;background:#edf3e2;color:#294832;font:13px/1.4 Arial,Helvetica,sans-serif;isolation:isolate}
+.leaf-companion *{box-sizing:border-box}
+.leaf-companion [hidden]{display:none!important}
+.leaf-companion button{font:inherit;touch-action:manipulation;cursor:pointer;min-height:44px;min-width:44px;border:1px solid #b8cba4;border-radius:9px;padding:8px 11px;background:#fffef6;color:#294832;line-height:1.3}
+.leaf-companion button:focus-visible,.leaf-companion .leaf-message:focus-visible{outline:3px solid #668a43;outline-offset:3px}
+.leaf-companion button:disabled{cursor:default;background:#e5edd9;color:#65755a;opacity:1}
+.leaf-companion .leaf-character{display:grid;place-items:center;width:110px;height:110px;padding:0;border:0;background:transparent;align-self:center}
+.leaf-companion .leaf-character:hover{background:#dfeacb}
+.leaf-companion .leaf-character svg{display:block;width:110px;height:110px;overflow:visible}
+.leaf-companion .leaf-speech{min-width:0;padding:8px 11px;border:1px solid #c3d3ae;border-radius:13px;background:#fffef6}
+.leaf-companion .leaf-title{display:block;margin:0 0 4px;font-size:13px;font-weight:700;line-height:1.25;color:inherit}
+.leaf-companion .leaf-message{margin:0;font-size:13px;line-height:1.45;overflow-wrap:anywhere;color:inherit}
+.leaf-companion .leaf-controls{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:7px}
+.leaf-companion .leaf-request{background:#355b3a;border-color:#355b3a;color:#fffef4;flex:1;min-width:145px}
+.leaf-companion .leaf-request:hover:not(:disabled){background:#496d42}
+.leaf-companion .leaf-history{display:flex;align-items:center;gap:5px}
+.leaf-companion .leaf-history button{padding:6px;font-size:19px;width:44px}
+.leaf-companion .leaf-position{min-width:34px;text-align:center;font-size:12px}
+.leaf-companion .leaf-budget{display:block;margin-top:5px;color:#5d7151;font-size:12px;line-height:1.35}
+.leaf-companion .leaf-close{width:44px;height:44px;align-self:start;padding:0;border:0;background:transparent;font-size:26px;font-weight:400}
+.leaf-companion[data-kind="warning"]{border-color:#c78671;background:#fff3e9}
+.leaf-companion[data-kind="warning"] .leaf-speech{border-color:#d4a08b;background:#fffaf3;color:#913d2e}
+.leaf-companion[data-kind="warning"] .leaf-budget{color:#826453}
+.leaf-companion[data-kind="greeting"] .leaf-character svg{animation:leaf-companion-wave .45s ease-out 1;transform-origin:50% 90%}
+.leaf-companion.leaf-side-panel{grid-template-columns:minmax(0,1fr) 44px;align-items:start}
+.leaf-companion.leaf-side-panel .leaf-character{grid-column:1;grid-row:1;width:177px;height:177px;justify-self:center}
+.leaf-companion.leaf-side-panel .leaf-character svg{width:177px;height:177px}
+.leaf-companion.leaf-side-panel .leaf-speech{grid-column:1/-1;grid-row:2}
+.leaf-companion.leaf-side-panel .leaf-close{grid-column:2;grid-row:1}
+@media(max-width:560px){.leaf-companion{grid-template-columns:110px minmax(0,1fr);gap:4px;padding:4px;align-items:start}.leaf-companion .leaf-speech{padding:8px}.leaf-companion .leaf-close{grid-column:1;grid-row:2;justify-self:center}.leaf-companion .leaf-character{grid-column:1;grid-row:1}.leaf-companion .leaf-speech{grid-column:2;grid-row:1/3}.leaf-companion .leaf-request{min-width:0;width:100%;flex-basis:100%;font-size:12px}.leaf-companion .leaf-controls{gap:4px}.leaf-companion .leaf-budget{font-size:12px}}
+@keyframes leaf-companion-wave{0%,100%{transform:rotate(0deg)}45%{transform:rotate(-7deg)}75%{transform:rotate(3deg)}}
+@media(prefers-reduced-motion:reduce){.leaf-companion .leaf-character svg{animation:none!important}}
+
+#lumo-leaf{margin:6px 0 8px}.leaf-chooser{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:4px 0;font-size:12px}.leaf-chooser select{min-height:44px;min-width:170px;padding:6px 10px;border:1px solid #a8c39a;border-radius:7px;background:#fff;color:#294832;font-size:13px}.mat{min-height:44px;font-size:12px}.chk,button.big{min-height:44px;font-size:12px}.dishcard.leaf-active{outline:2px solid #739959;outline-offset:1px}.dishcard h3,.tip,.emptymsg,.pchip,.catlbl,.cntrow,.obs{font-size:12px}.pchip{display:inline-flex;align-items:center;min-height:30px}.sub,.help,.banner{font-size:12px}.leaf-chooser select:focus-visible,.mat:focus-visible,.dish3d:focus-visible{outline:3px solid #668a43;outline-offset:2px}
+@media(min-width:701px){.shelf{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}.shelf .catlbl{display:none}.mat{justify-content:center;padding:5px 6px}.leaf-chooser{margin:0;justify-content:flex-end}.leaf-chooser label{display:flex;gap:8px;align-items:center}.dish3d{max-width:120px}}
+@media(max-width:560px){.leaf-chooser{justify-content:space-between}.leaf-chooser label{display:flex;align-items:center;gap:8px}.leaf-chooser select{min-width:150px;max-width:100%}.mat{flex:1 1 125px}}
+</style>
 </head>
 <body>
 <header>
 <h1>🧫 Kresse-Labor</h1>
 <span class="sub">6 Petrischalen · je 20 Samen · Material antippen → Schale antippen.</span>
 </header>
+<div class="leaf-chooser"><label for="lumo-leaf-dish">Denkanstöße für <select id="lumo-leaf-dish" aria-label="Ansatz für Blättchens Denkanstöße"><option value="0">1 · Kontrolle</option><option value="1">2 · ohne Erde</option><option value="2">3 · ohne Wasser</option><option value="3">4 · ohne Licht</option><option value="4">5 · ohne Luft</option><option value="5">6 · ohne Wärme</option></select></label></div>
+<section id="lumo-leaf" aria-label="Blättchen begleitet die Kresseversuche"></section>
+
 
 <div class="help">📋 <b>Aufgabe:</b> Jede Schale ist für eine Versuchsversion vorgesehen (siehe Titel!).
 Baue die <b>Kontrolle</b> mit allen optimalen Bedingungen und die fünf Versuche, in denen jeweils
@@ -101,6 +143,116 @@ Baue die <b>Kontrolle</b> mit allen optimalen Bedingungen und die fünf Versuche
   <p class="obs">💬 <b>Auswertung:</b> Was brauchen Kressesamen unbedingt zum <b>Keimen</b>? Wofür brauchen sie Licht erst <b>später</b> (schau in die dunkle Schale!)? Vergleiche jeden Versuch mit deiner Kontrolle.</p>
 </div>
 
+<script id="leaf-companion">
+/* Blättchen: presentation and hint history only; adapters own experiment state. */
+(function(scope){
+  'use strict';
+  const FIGURE = "<svg class=\"fs-leaf-character\" viewBox=\"0 0 126 126\" aria-hidden=\"true\" focusable=\"false\">\n      <ellipse cx=\"66\" cy=\"117\" rx=\"38\" ry=\"5\" fill=\"#244b3020\"/>\n      <g fill=\"none\" stroke=\"#31563b\" stroke-width=\"4.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <path d=\"M54 92 48 109 36 111M77 91 84 108 96 110\"/>\n        <path d=\"M33 63 18 69 13 60\"/>\n        <path class=\"fs-leaf-wave-arm\" d=\"m92 57 14-10 4-13\"/>\n      </g>\n      <g fill=\"#f7fbeb\" stroke=\"#31563b\" stroke-width=\"2.5\" stroke-linejoin=\"round\">\n        <path d=\"m13 61-5-3-2-7 4-2 4 4 1-8 4 1 1 10 4 4-5 7Z\"/>\n        <path class=\"fs-leaf-wave-hand\" d=\"m108 36-6-6 1-5 5 3 1-11 4-1 2 11 4-5 4 3-6 11-4 3Z\"/>\n        <path d=\"M48 106q-11-4-17 5l1 5h21l1-6ZM82 106q10-4 17 5l-1 5H78l-1-6Z\"/>\n      </g>\n      <path d=\"M64 99C31 96 21 68 35 40 44 22 68 12 93 9c-2 18 12 35 7 54-5 21-17 34-36 36Z\" fill=\"#a9d36c\" stroke=\"#31563b\" stroke-width=\"3.5\" stroke-linejoin=\"round\"/>\n      <path d=\"M64 99C55 74 61 41 91 12c-9 29-8 65-27 87Z\" fill=\"#8fc058\" opacity=\".65\"/>\n      <path d=\"M62 91q-3-40 27-73M61 73 43 64m20-9 19-7M69 39l-10-9\" fill=\"none\" stroke=\"#6f9b44\" stroke-width=\"2.2\" stroke-linecap=\"round\"/>\n      <ellipse cx=\"51\" cy=\"57\" rx=\"5.7\" ry=\"8\" fill=\"#fcfdef\"/>\n      <ellipse cx=\"77\" cy=\"53\" rx=\"5.7\" ry=\"8\" fill=\"#fcfdef\"/>\n      <ellipse cx=\"52.5\" cy=\"58\" rx=\"2.8\" ry=\"4.1\" fill=\"#274531\"/>\n      <ellipse cx=\"78\" cy=\"54\" rx=\"2.8\" ry=\"4.1\" fill=\"#274531\"/>\n      <path d=\"M45 43q5-4 10-1m17-4q5-3 10 1\" fill=\"none\" stroke=\"#31563b\" stroke-width=\"2.6\" stroke-linecap=\"round\"/>\n      <ellipse cx=\"43\" cy=\"70\" rx=\"7\" ry=\"4\" fill=\"#e6a78b\" opacity=\".78\"/>\n      <ellipse cx=\"85\" cy=\"65\" rx=\"7\" ry=\"4\" fill=\"#e6a78b\" opacity=\".78\"/>\n      <path d=\"M53 71q11 13 22-3\" fill=\"#36543a\" stroke=\"#31563b\" stroke-width=\"2.3\" stroke-linecap=\"round\"/>\n      <path d=\"M58 74q7 4 12-2\" fill=\"none\" stroke=\"#fff6df\" stroke-width=\"3\" stroke-linecap=\"round\"/>\n      <path d=\"m92 8 3-4\" fill=\"none\" stroke=\"#31563b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/>\n    </svg>";
+  const LIMIT=4;
+  let serial=0;
+  function validKey(key){
+    if(typeof key!=='string'||!key.trim())throw new Error('Blättchen benötigt einen stabilen experimentKey.');
+    return key;
+  }
+  function createHintStore(){
+    const sessions=new Map();
+    function entry(key){
+      key=validKey(key);
+      if(!sessions.has(key))sessions.set(key,{history:[],view:0});
+      return sessions.get(key);
+    }
+    function read(key){const s=entry(key);return{history:s.history.slice(),view:s.view,remaining:LIMIT-s.history.length};}
+    function request(key,make){
+      const s=entry(key);
+      if(s.history.length>=LIMIT)return false;
+      const text=make(s.history.length);
+      if(typeof text!=='string'||!text.trim())throw new Error('Ein Denkanstoß muss einen Text enthalten.');
+      s.history.push(text);s.view=s.history.length-1;return true;
+    }
+    function move(key,delta){const s=entry(key);s.view=Math.max(0,Math.min(s.history.length-1,s.view+delta));return read(key);}
+    return{read,request,move,reset(key){sessions.delete(validKey(key));}};
+  }
+  function mount(host,options={}){
+    if(!host||typeof host.querySelector!=='function')throw new Error('Blättchens Platz fehlt.');
+    if(typeof options.makeHint!=='function')throw new Error('Blättchen benötigt versuchsspezifische Denkanstöße.');
+    const getContext=typeof options.getContext==='function'?options.getContext:()=>({experimentKey:options.key});
+    const store=createHintStore(),views=new Map();
+    const id='leaf-companion-'+(++serial);
+    const greeting=options.greeting||'Hallo, ich bin Blättchen! Tippe mich an, wenn du nicht weiterweißt. Du führst den Versuch durch – ich gebe dir Denkanstöße.';
+    const intro='Welche Frage möchtest du mit deinem Versuch beantworten? Wenn du feststeckst, kannst du einen Denkanstoß abrufen.';
+    const quiet='Tippe mich an, wenn du einen Denkanstoß brauchst. Deine bisherigen Hinweise kannst du jederzeit erneut lesen.';
+    let destroyed=false;
+    host.classList.add('leaf-companion');
+    host.setAttribute('aria-label','Blättchen · Versuchsbegleitung');
+    host.innerHTML='<button class="leaf-character" type="button" aria-label="Frag Blättchen" aria-expanded="false" aria-controls="'+id+'">'+FIGURE+'</button><div class="leaf-speech" id="'+id+'"><strong class="leaf-title"></strong><p class="leaf-message" role="status" aria-live="polite" aria-atomic="true" tabindex="-1"></p><div class="leaf-controls" hidden><button class="leaf-request" type="button">Denkanstoß anzeigen</button><div class="leaf-history" hidden><button class="leaf-previous" type="button" aria-label="Vorherigen Denkanstoß erneut lesen">←</button><span class="leaf-position"></span><button class="leaf-forward" type="button" aria-label="Nächsten erhaltenen Denkanstoß erneut lesen">→</button></div></div><span class="leaf-budget"></span></div><button class="leaf-close" type="button" aria-label="Blättchens Hinweis schließen" hidden>×</button>';
+    const find=name=>host.querySelector('.leaf-'+name);
+    const ui={character:find('character'),title:find('title'),message:find('message'),controls:find('controls'),request:find('request'),history:find('history'),previous:find('previous'),position:find('position'),forward:find('forward'),budget:find('budget'),close:find('close')};
+    function current(){
+      const context=getContext()||{};
+      const key=validKey(context.experimentKey||options.key);
+      if(!views.has(key))views.set(key,{open:false,kind:'quiet',message:''});
+      return{context,key,view:views.get(key),hints:store.read(key)};
+    }
+    function update(){
+      if(destroyed)return;
+      const {view,hints}=current(),kind=view.open?view.kind:'quiet',used=hints.history.length;
+      const showingHints=view.open&&kind==='help';
+      let title='Blättchen ist dabei.',text=quiet;
+      if(kind==='greeting'){title='Hallo, ich bin Blättchen!';text=view.message||greeting;}
+      if(kind==='warning'){title='Kurz innehalten.';text=view.message;}
+      if(kind==='info'){title='Ein Blick auf den Versuch.';text=view.message;}
+      if(showingHints){title=used?'Denkanstoß '+(hints.view+1):'Ein Denkanstoß für deinen Versuch';text=used?hints.history[hints.view]:intro;}
+      host.dataset.kind=kind;host.dataset.open=String(view.open);
+      ui.character.setAttribute('aria-expanded',String(view.open));
+      ui.character.setAttribute('aria-label','Frag Blättchen. '+hints.remaining+' von 4 Denkanstößen frei.');
+      ui.title.textContent=title;
+      ui.message.setAttribute('role',kind==='warning'?'alert':'status');
+      ui.message.setAttribute('aria-live',kind==='warning'?'assertive':'polite');
+      if(ui.message.textContent!==text)ui.message.textContent=text;
+      ui.controls.hidden=!showingHints;ui.close.hidden=!view.open;
+      ui.request.disabled=hints.remaining===0;
+      ui.request.textContent=hints.remaining===0?'Alle 4 Denkanstöße abgerufen':used?'Nächster Denkanstoß':'Denkanstoß anzeigen';
+      ui.history.hidden=used<2;
+      ui.position.textContent=(hints.view+1)+' / '+used;
+      ui.previous.disabled=hints.view<=0;ui.forward.disabled=hints.view>=used-1;
+      ui.budget.textContent=hints.remaining+' von 4 Denkanstößen frei · Erneutes Lesen ist frei.';
+    }
+    function show(kind,message){
+      if(destroyed)return;
+      const {view}=current();view.open=true;view.kind=kind;view.message=String(message||'');update();
+    }
+    function onToggle(){
+      const {view}=current();
+      if(view.open&&view.kind==='help'){view.open=false;view.kind='quiet';}
+      else{view.open=true;view.kind='help';}
+      update();
+    }
+    function onClose(){const {view}=current();view.open=false;view.kind='quiet';view.message='';update();ui.character.focus({preventScroll:true});}
+    function onRequest(){
+      const {context,key,view}=current();
+      if(!store.request(key,index=>options.makeHint(context,index)))return;
+      view.open=true;view.kind='help';update();ui.message.focus({preventScroll:true});
+    }
+    function history(delta){const {key,view}=current();store.move(key,delta);view.open=true;view.kind='help';update();ui.message.focus({preventScroll:true});}
+    const onPrevious=()=>history(-1),onForward=()=>history(1);
+    function onKey(event){if(event.key==='Escape'&&current().view.open){event.preventDefault();event.stopPropagation();onClose();}}
+    ui.character.addEventListener('click',onToggle);ui.close.addEventListener('click',onClose);ui.request.addEventListener('click',onRequest);ui.previous.addEventListener('click',onPrevious);ui.forward.addEventListener('click',onForward);host.addEventListener('keydown',onKey);
+    const api={
+      update,
+      warn(message){show('warning',message);},
+      info(message){show('info',message);},
+      reset(key){key=validKey(key||current().key);store.reset(key);views.delete(key);update();},
+      greet(){show('greeting',greeting);},
+      destroy(){destroyed=true;ui.character.removeEventListener('click',onToggle);ui.close.removeEventListener('click',onClose);ui.request.removeEventListener('click',onRequest);ui.previous.removeEventListener('click',onPrevious);ui.forward.removeEventListener('click',onForward);host.removeEventListener('keydown',onKey);}
+    };
+    api.greet();
+    return Object.freeze(api);
+  }
+  scope.LeafCompanion=Object.freeze({mount});
+  if(typeof module!=='undefined'&&module.exports)module.exports={mount,createHintStore};
+})(typeof globalThis!=='undefined'?globalThis:window);
+
+</script>
 <script>
 const N=20;
 const VERSIONS=["Kontrolle","ohne Erde","ohne Wasser","ohne Licht","ohne Luft","ohne Wärme"];
@@ -125,7 +277,7 @@ const MAT=[
  {cat:"deckel",val:"dicht",ico:"🔒",nm:"luftdicht"},
 ];
 let dishes=[];for(let i=0;i<6;i++)dishes.push({substrat:null,wasser:0,samen:0,standort:null,temp:null,deckel:null});
-let sel=null,phase="build";
+let sel=null,phase="build",activeLeafDish=0,leaf=null;
 
 const SEEDPOS=[];
 for(let k=0;k<11;k++){const a=k*Math.PI*2/11;SEEDPOS.push([Math.cos(a)*.72,Math.sin(a)*.72]);}
@@ -135,7 +287,7 @@ SEEDPOS.push([0,0]);
 const shelf=document.getElementById("shelf");
 MAT.forEach(m=>{
   if(m.grp){shelf.insertAdjacentHTML("beforeend",`<div class="catlbl">${m.grp}</div>`);return;}
-  const d=document.createElement("div");d.className="mat";
+  const d=document.createElement("button");d.type="button";d.className="mat";
   d.innerHTML=`<span class="ico">${m.ico}</span>${m.nm}`;
   d.onclick=()=>{document.querySelectorAll(".mat").forEach(x=>x.classList.remove("sel"));
     if(sel===m){sel=null;}else{sel=m;d.classList.add("sel");}};
@@ -226,7 +378,7 @@ function renderDish(i,interactive){
   const el=document.getElementById("card"+i),d=dishes[i];
   const keys=VARS.filter(k=>d[k]);
   const chips=keys.map(k=>`<span class="pchip" data-rm="${k}">${chipTxt(k,d[k])} <b style="color:#b23c3c">✕</b></span>`).join("");
-  el.className="dishcard"+(dishValid(i)?" ready":" bad");
+  el.className="dishcard"+(dishValid(i)?" ready":" bad")+(i===activeLeafDish?" leaf-active":"");
   el.innerHTML=dishHead(i)
     +dishSVG(d,i)
     +`<div class="placed">${chips||'<span class="emptymsg">leer – bestücke mich!</span>'}</div>`
@@ -234,15 +386,18 @@ function renderDish(i,interactive){
   if(interactive){
     const svg=el.querySelector(".dish3d");
     svg.style.cursor="pointer";
-    svg.onclick=()=>{if(sel){addToDish(i,sel);}};
+    svg.setAttribute("tabindex","0");svg.setAttribute("role","button");svg.setAttribute("aria-label","Schale "+(i+1)+": "+VERSIONS[i]+" auswählen oder ausgewähltes Material zugeben");
+    svg.onclick=()=>{selectLeafDish(i);if(sel){addToDish(i,sel);}};
+    svg.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();svg.onclick();}};
     el.querySelectorAll(".pchip").forEach(c=>{
-      c.onclick=()=>{const k=c.dataset.rm;
+      c.onclick=()=>{selectLeafDish(i);const k=c.dataset.rm;
         dishes[i][k]=(k==="substrat"||k==="standort"||k==="temp"||k==="deckel")?null:0;refresh();};
     });
   }
 }
 
 function addToDish(i,m){
+  selectLeafDish(i);
   if(m.cat==="substrat")dishes[i].substrat=m.val;
   else if(m.cat==="wasser"||m.cat==="samen")dishes[i][m.cat]=1;
   else dishes[i][m.cat]=m.val;
@@ -250,7 +405,17 @@ function addToDish(i,m){
   refresh();
 }
 function tip(i,msg,good){const t=document.getElementById("tip"+i);if(t){t.innerHTML=(good?"✅ ":"💡 ")+msg;t.style.display="block";t.className="tip"+(good?" good":"");}}
-function refresh(){for(let i=0;i<6;i++)renderDish(i,true);check();}
+function refresh(){for(let i=0;i<6;i++)renderDish(i,true);check();reportLeafIssue();}
+function selectLeafDish(i){
+  activeLeafDish=Math.max(0,Math.min(5,Number(i)||0));
+  document.getElementById('lumo-leaf-dish').value=String(activeLeafDish);
+  document.querySelectorAll('#bench .dishcard').forEach((card,n)=>card.classList.toggle('leaf-active',n===activeLeafDish));
+  leaf?.update();
+}
+function reportLeafIssue(){
+  const t=document.getElementById('tip'+activeLeafDish);
+  if(t&&!t.classList.contains('good'))leaf?.warn(t.textContent.replace(/^💡\s*/,''));
+}
 
 function check(){
   document.querySelectorAll(".tip").forEach(t=>{t.style.display="none";t.className="tip";});
@@ -291,7 +456,11 @@ check();
 /* Simulation */
 let sim=null;
 document.getElementById("startBtn").onclick=()=>{
-  if(!check()){alert("Noch nicht fertig! Lies die 💡-Hinweise an den Schalen – in jedem Versuch wird nur EINE Variable verändert.");return;}
+  if(!check()){
+    selectLeafDish(dishes.findIndex((d,i)=>!dishValid(i)));
+    if(leaf)reportLeafIssue();else alert("Noch nicht fertig! Prüfe die Hinweise an den Schalen.");
+    return;
+  }
   phase="run";
   document.getElementById("startBtn").disabled=true;
   document.querySelectorAll(".mat").forEach(x=>{x.style.pointerEvents="none";x.style.opacity=.5;});
@@ -366,12 +535,14 @@ function startCount(){
       };
     });
     document.getElementById("ck"+i).onclick=()=>{
+      selectLeafDish(i);
       const m=Object.keys(st.marked).length,fb=document.getElementById("fb"+i);
       if(m===st.n){fb.textContent="🎉 Richtig!";fb.className="fb ok";st.done=true;
         document.getElementById("ck"+i).disabled=true;
         if(sim.every(x=>x.done))showSummary();}
       else if(m>st.n){fb.textContent="❌ Zu viele! Nicht jeder Same ist aufgegangen.";fb.className="fb no";}
       else{fb.textContent="❌ Zu wenige! Auch die kleinen Keimblätter zählen.";fb.className="fb no";}
+      if(m!==st.n)leaf?.warn(fb.textContent.replace(/^❌\s*/,''));
     };
   });
 }
@@ -384,6 +555,35 @@ function showSummary(){
   document.getElementById("sumTable").innerHTML=h;
   document.getElementById("sumPanel").scrollIntoView({behavior:"smooth"});
 }
+
+document.getElementById('lumo-leaf-dish').addEventListener('change',e=>selectLeafDish(e.target.value));
+leaf=window.LeafCompanion.mount(document.getElementById('lumo-leaf'),{
+  key:'lumo-kresse',
+  greeting:'Hallo, ich bin Blättchen! Du richtest die Ansätze ein. Wenn du feststeckst, tippe mich an. Jede Schale hat vier Denkanstöße – wähle oben den passenden Ansatz.',
+  getContext:()=>({experimentKey:'lumo-kresse-'+activeLeafDish,index:activeLeafDish,dish:dishes[activeLeafDish],phase}),
+  makeHint:(context,index)=>{
+    if(context.phase==='count')return [
+      'Betrachte zuerst den ausgewählten Ansatz. Nach welchem sichtbaren Merkmal unterscheidest du gekeimte und ungekeimte Samen?',
+      'Du kannst die sichtbaren Keimlinge einzeln markieren. Ein zweites Antippen hebt die Markierung wieder auf.',
+      'Gehe die Schale systematisch entlang. Welche Stelle könntest du bei der ersten Runde übersehen haben?',
+      'Vergleiche deine Beobachtungen mit der Kontrolle. Welche Bedingung unterscheidet diesen Ansatz von ihr?'
+    ][index];
+    if(context.phase==='run')return [
+      'Verfolge die Tagesanzeige. Welche Veränderung kannst du von einem Tag zum nächsten erkennen?',
+      'Vergleiche immer Ansätze mit bekannter Vorbereitung. Welche Einstellungen hast du gewählt?',
+      'Richte deine Aufmerksamkeit auf eine Schale, bevor du zur nächsten wechselst.',
+      'Nach der Woche kannst du selbst zählen. Welches Vorgehen hilft dir, keine Stelle auszulassen?'
+    ][index];
+    return [
+      'Lies den Titel des ausgewählten Ansatzes: „'+VERSIONS[context.index]+'“. Welche Bedingung soll darin untersucht werden?',
+      !context.dish.samen?'Prüfe zunächst das Material. Was fehlt in einer Schale, in der du die Keimung untersuchen möchtest?':'Gehe Unterlage, Wasser, Standort, Temperatur und Deckel nacheinander durch. Entsprechen sie deiner Versuchsfrage?',
+      context.index===0?'Welche Bedingungen machen deine Kontrolle zu einer geeigneten Vergleichsgrundlage?':'Vergleiche mit deiner Kontrolle. Welche Einstellung soll sich unterscheiden, welche sollen gleich bleiben?',
+      'Material wählst du oben aus und gibst es durch Antippen einer Schale dazu. Einen Eintrag kannst du durch Antippen seines Chips wieder entfernen. Prüfe anschließend alle Ansätze.'
+    ][index];
+  }
+});
+
 </script>
 </body>
 </html>
+
